@@ -7,6 +7,8 @@ import  (
 	"fmt"
 	"flag"
 	"math"
+	"strings"
+	"path/filepath"
 	"image"
 	"image/color"
 	"image/png"
@@ -452,10 +454,14 @@ func main() {
 		return
 	}
 	if opts.Out == "" {
+		inp := filepath.Base(opts.Inp)
+		if strings.HasSuffix(inp, ".3a") {
+			inp = strings.TrimSuffix(inp, ".3a")
+		}
 		if opts.Dyn {
-			opts.Out = opts.Inp + ".gif"
+			opts.Out = inp + ".gif"
 		}else {
-			opts.Out = opts.Inp + ".png"
+			opts.Out = inp + ".png"
 		}
 	}
 	var font_size float64 = 72
