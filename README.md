@@ -1,9 +1,11 @@
 # convert3a
-This tool allows you to convert [3a](https://github.com/DomesticMoth/3a) animations to png or gif formats  
-Build:  
-`$ git clone https://github.com/DomesticMoth/convert3a.git`  
-`$ go build -o convert3a *.go`  
-Usage:  
+This tool allows you to convert [3a](https://github.com/DomesticMoth/3a) animations to png images or gif animations.  
+# Build
+```sh
+git clone https://github.com/DomesticMoth/convert3a.git
+go build -o convert3a *.go
+```
+# Usage
 ```
 convert3a by DomesticMoth
 Tool for convert 3a animations to media formats
