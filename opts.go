@@ -1,41 +1,41 @@
 /*
-    This file is part of convert3a.
+This file is part of convert3a.
 
-    convert3a is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+convert3a is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    convert3a is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+convert3a is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with convert3a.  If not, see <https://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with convert3a.  If not, see <https://www.gnu.org/licenses/>.
 */
 package main
 
 import (
-	"fmt"
 	"flag"
+	"fmt"
 	"os"
 )
 
-type Opts struct{
-	Dyn bool
-	Preview int
-	PreviewSetted bool
-	FontSize int
+type Opts struct {
+	Dyn            bool
+	Preview        int
+	PreviewSetted  bool
+	FontSize       int
 	FontSizeSetted bool
-	DPI int
-	DPISetted bool
-	Inp string
-	Out string
-	Colors []*string
+	DPI            int
+	DPISetted      bool
+	Inp            string
+	Out            string
+	Colors         []*string
 }
 
-func PrintHelp(){
+func PrintHelp() {
 	fmt.Println("convert3a by DomesticMoth")
 	fmt.Println("Tool for convert 3a animations to media formats\n")
 	fmt.Println("Args:")
@@ -107,9 +107,9 @@ func GetOpts() Opts {
 	if *DPI >= 2147483647 {
 		DPISetted = false
 	}
-	if *CallHelp{
+	if *CallHelp {
 		PrintHelp()
 		os.Exit(0)
 	}
-	return Opts{*Dyn, *Preview, PreviewSetted, *FontSize, FontSizeSetted, *DPI, DPISetted,*Inp, *Out, colors}
+	return Opts{*Dyn, *Preview, PreviewSetted, *FontSize, FontSizeSetted, *DPI, DPISetted, *Inp, *Out, colors}
 }

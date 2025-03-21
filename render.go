@@ -1,40 +1,40 @@
 /*
-    This file is part of convert3a.
+This file is part of convert3a.
 
-    convert3a is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+convert3a is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    convert3a is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+convert3a is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with convert3a.  If not, see <https://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with convert3a.  If not, see <https://www.gnu.org/licenses/>.
 */
 package main
 
 import (
-	"math"
-	"image"
-	"image/png"
-	"image/gif"
-	"github.com/llgcode/draw2d/draw2dimg"
-	"io"
-	"github.com/llgcode/draw2d"
 	"github.com/DomesticMoth/go3a"
+	"github.com/llgcode/draw2d"
+	"github.com/llgcode/draw2d/draw2dimg"
+	"image"
 	"image/color"
+	"image/gif"
+	"image/png"
+	"io"
+	"math"
 )
 
-type FontInfo struct{
-	 font_data draw2d.FontData
-	 font_size float64
-	 DPI int
+type FontInfo struct {
+	font_data draw2d.FontData
+	font_size float64
+	DPI       int
 }
 
-func getBoundsOfFont(font_data draw2d.FontData, font_size float64, DPI int) (float64, float64){
+func getBoundsOfFont(font_data draw2d.FontData, font_size float64, DPI int) (float64, float64) {
 	dest := image.NewRGBA(image.Rect(0, 0, 100, 100))
 	gc := draw2dimg.NewGraphicContext(dest)
 	gc.SetFontData(font_data)
@@ -43,33 +43,33 @@ func getBoundsOfFont(font_data draw2d.FontData, font_size float64, DPI int) (flo
 	width := 0.0
 	height := 0.0
 	letters := []string{
-		"A", "B", "C", "D", "E", "F", 
-		"G", "H", "I", "J", "K", "L", 
-		"M", "N", "O", "P", "Q", "R", 
-		"S", "T", "U", "V", "W", "X", 
-		"Y", "Z", "a", "b", "c", "d", 
-		"e", "f", "g", "h", "i", "j", 
-		"k", "l", "m", "n", "o", "p", 
-		"q", "r", "s", "t", "u", "v", 
-		"w", "x", "y", "x", "1", "2", 
-		"3", "4", "5", "6", "7", "8", 
-		"9", "0", "`", "'", "\"", ".", 
-		",", "/", "\\", "|", ":", ";", 
-		"*", "&", "!", "@", "#", "$", 
-		"%", "~", "*", "(", ")", "[", 
+		"A", "B", "C", "D", "E", "F",
+		"G", "H", "I", "J", "K", "L",
+		"M", "N", "O", "P", "Q", "R",
+		"S", "T", "U", "V", "W", "X",
+		"Y", "Z", "a", "b", "c", "d",
+		"e", "f", "g", "h", "i", "j",
+		"k", "l", "m", "n", "o", "p",
+		"q", "r", "s", "t", "u", "v",
+		"w", "x", "y", "x", "1", "2",
+		"3", "4", "5", "6", "7", "8",
+		"9", "0", "`", "'", "\"", ".",
+		",", "/", "\\", "|", ":", ";",
+		"*", "&", "!", "@", "#", "$",
+		"%", "~", "*", "(", ")", "[",
 		"]", "{", "}",
-		}
-	for _, letter := range letters{
+	}
+	for _, letter := range letters {
 		left, top, right, bottom := gc.GetStringBounds(letter)
-		h := math.Abs(bottom-top)
-		w := math.Abs(left-right)
+		h := math.Abs(bottom - top)
+		w := math.Abs(left - right)
 		width = math.Max(width, w)
 		height = math.Max(height, h)
 	}
 	return width, height
 }
 
-func DrawFullblock(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawFullblock(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(left_x, up_y)
 	gc.BeginPath()
 	gc.LineTo(right_x, up_y)
@@ -80,7 +80,7 @@ func DrawFullblock(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, midd
 	gc.FillStroke()
 }
 
-func DrawUpperHalfBlock(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawUpperHalfBlock(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(left_x, up_y)
 	gc.BeginPath()
 	gc.LineTo(right_x, up_y)
@@ -91,7 +91,7 @@ func DrawUpperHalfBlock(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y,
 	gc.FillStroke()
 }
 
-func DrawLowerHalfBlock(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawLowerHalfBlock(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(left_x, down_y)
 	gc.BeginPath()
 	gc.LineTo(right_x, down_y)
@@ -102,7 +102,7 @@ func DrawLowerHalfBlock(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y,
 	gc.FillStroke()
 }
 
-func DrawQuadrantUpperLeftAndLowerLeftAndLowerRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawQuadrantUpperLeftAndLowerLeftAndLowerRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(left_x, down_y)
 	gc.BeginPath()
 	gc.LineTo(right_x, down_y)
@@ -115,7 +115,7 @@ func DrawQuadrantUpperLeftAndLowerLeftAndLowerRight(gc draw2d.GraphicContext, le
 	gc.FillStroke()
 }
 
-func DrawQuadrantUpperLeftAndUpperRightAndLowerLeft(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawQuadrantUpperLeftAndUpperRightAndLowerLeft(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(left_x, down_y)
 	gc.BeginPath()
 	gc.LineTo(middle_x, down_y)
@@ -128,7 +128,7 @@ func DrawQuadrantUpperLeftAndUpperRightAndLowerLeft(gc draw2d.GraphicContext, le
 	gc.FillStroke()
 }
 
-func DrawQuadrantUpperLeftAndUpperRightAndLowerRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawQuadrantUpperLeftAndUpperRightAndLowerRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(left_x, middle_y)
 	gc.BeginPath()
 	gc.LineTo(middle_x, middle_y)
@@ -141,7 +141,7 @@ func DrawQuadrantUpperLeftAndUpperRightAndLowerRight(gc draw2d.GraphicContext, l
 	gc.FillStroke()
 }
 
-func DrawQuadrantUpperRightAndLowerLeftAndLowerRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawQuadrantUpperRightAndLowerLeftAndLowerRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(left_x, down_y)
 	gc.BeginPath()
 	gc.LineTo(right_x, down_y)
@@ -154,7 +154,7 @@ func DrawQuadrantUpperRightAndLowerLeftAndLowerRight(gc draw2d.GraphicContext, l
 	gc.FillStroke()
 }
 
-func DrawQuadrantLowerLeft(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawQuadrantLowerLeft(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(left_x, down_y)
 	gc.BeginPath()
 	gc.LineTo(middle_x, down_y)
@@ -165,7 +165,7 @@ func DrawQuadrantLowerLeft(gc draw2d.GraphicContext, left_x, right_x, up_y, down
 	gc.FillStroke()
 }
 
-func DrawQuadrantLowerRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawQuadrantLowerRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(middle_x, down_y)
 	gc.BeginPath()
 	gc.LineTo(right_x, down_y)
@@ -176,7 +176,7 @@ func DrawQuadrantLowerRight(gc draw2d.GraphicContext, left_x, right_x, up_y, dow
 	gc.FillStroke()
 }
 
-func DrawQuadrantUpperLeft(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawQuadrantUpperLeft(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(left_x, middle_y)
 	gc.BeginPath()
 	gc.LineTo(middle_x, middle_y)
@@ -187,7 +187,7 @@ func DrawQuadrantUpperLeft(gc draw2d.GraphicContext, left_x, right_x, up_y, down
 	gc.FillStroke()
 }
 
-func DrawQuadrantUpperRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64){
+func DrawQuadrantUpperRight(gc draw2d.GraphicContext, left_x, right_x, up_y, down_y, middle_x, middle_y float64) {
 	gc.MoveTo(middle_x, up_y)
 	gc.BeginPath()
 	gc.LineTo(right_x, up_y)
@@ -236,37 +236,37 @@ func renderFrame(rect image.Rectangle, frame go3a.Frame, font_info FontInfo, pal
 				right_x := math.Min(x+char_width*(1+d), float64(rect.Dx()))
 				down_y := math.Min(y+char_height-(char_height*(1-d)), float64(rect.Dy()))
 				up_y := math.Max(y-char_height*(1+d), 0)
-				middle_x := x+char_width/2
-				middle_y := y-char_height/2
-				if char == "█"{
+				middle_x := x + char_width/2
+				middle_y := y - char_height/2
+				if char == "█" {
 					DrawFullblock(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▀"{
+				} else if char == "▀" {
 					DrawUpperHalfBlock(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▄"{
+				} else if char == "▄" {
 					DrawLowerHalfBlock(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▙"{
+				} else if char == "▙" {
 					DrawQuadrantUpperLeftAndLowerLeftAndLowerRight(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▛"{
+				} else if char == "▛" {
 					DrawQuadrantUpperLeftAndUpperRightAndLowerLeft(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▜"{
+				} else if char == "▜" {
 					DrawQuadrantUpperLeftAndUpperRightAndLowerRight(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▟"{
+				} else if char == "▟" {
 					DrawQuadrantUpperRightAndLowerLeftAndLowerRight(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▚"{
+				} else if char == "▚" {
 					DrawQuadrantUpperLeft(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
 					DrawQuadrantLowerRight(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▞"{
+				} else if char == "▞" {
 					DrawQuadrantUpperRight(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
 					DrawQuadrantLowerLeft(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▖"{
+				} else if char == "▖" {
 					DrawQuadrantLowerLeft(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▗"{
+				} else if char == "▗" {
 					DrawQuadrantLowerRight(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▘"{
+				} else if char == "▘" {
 					DrawQuadrantUpperLeft(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else if char == "▝"{
+				} else if char == "▝" {
 					DrawQuadrantUpperRight(gc, left_x, right_x, up_y, down_y, middle_x, middle_y)
-				}else{
+				} else {
 					gc.FillStringAt(char, x, y)
 				}
 				x += char_width
@@ -277,25 +277,25 @@ func renderFrame(rect image.Rectangle, frame go3a.Frame, font_info FontInfo, pal
 	return img
 }
 
-func RenderToPng(out io.Writer, chars_x, chars_y float64, frame go3a.Frame, font_info FontInfo, palette []color.Color){
+func RenderToPng(out io.Writer, chars_x, chars_y float64, frame go3a.Frame, font_info FontInfo, palette []color.Color) {
 	char_width, char_height := getBoundsOfFont(font_info.font_data, font_info.font_size, font_info.DPI)
 	rect := image.Rect(0, 0, int(char_width*chars_x), int(char_height*chars_y))
 	img := renderFrame(rect, frame, font_info, palette, char_width, char_height)
 	png.Encode(out, img)
 }
 
-func RGBtoPaletted(rgb *image.RGBA, plt *image.Paletted){
-	for x := 0 ; x < plt.Rect.Dx() ; x++ {
-		for y := 0 ; y < plt.Rect.Dy() ; y++ {
+func RGBtoPaletted(rgb *image.RGBA, plt *image.Paletted) {
+	for x := 0; x < plt.Rect.Dx(); x++ {
+		for y := 0; y < plt.Rect.Dy(); y++ {
 			color_rgba := color.RGBA{
-				rgb.Pix[(y-rgb.Rect.Min.Y)*rgb.Stride + (x-rgb.Rect.Min.X)*4],
-				rgb.Pix[(y-rgb.Rect.Min.Y)*rgb.Stride + (x-rgb.Rect.Min.X)*4+1],
-				rgb.Pix[(y-rgb.Rect.Min.Y)*rgb.Stride + (x-rgb.Rect.Min.X)*4+2],
-				rgb.Pix[(y-rgb.Rect.Min.Y)*rgb.Stride + (x-rgb.Rect.Min.X)*4+3],
+				rgb.Pix[(y-rgb.Rect.Min.Y)*rgb.Stride+(x-rgb.Rect.Min.X)*4],
+				rgb.Pix[(y-rgb.Rect.Min.Y)*rgb.Stride+(x-rgb.Rect.Min.X)*4+1],
+				rgb.Pix[(y-rgb.Rect.Min.Y)*rgb.Stride+(x-rgb.Rect.Min.X)*4+2],
+				rgb.Pix[(y-rgb.Rect.Min.Y)*rgb.Stride+(x-rgb.Rect.Min.X)*4+3],
 			}
 			for i, color := range plt.Palette {
-				if color == color_rgba{
-					plt.Pix[(y-plt.Rect.Min.Y)*plt.Stride + (x-plt.Rect.Min.X)*1] = uint8(i)
+				if color == color_rgba {
+					plt.Pix[(y-plt.Rect.Min.Y)*plt.Stride+(x-plt.Rect.Min.X)*1] = uint8(i)
 					break
 				}
 			}
@@ -303,7 +303,7 @@ func RGBtoPaletted(rgb *image.RGBA, plt *image.Paletted){
 	}
 }
 
-func RenderToGif(out io.Writer, chars_x, chars_y int, frames go3a.Body, delay int, palette []color.Color, font_info FontInfo){
+func RenderToGif(out io.Writer, chars_x, chars_y int, frames go3a.Body, delay int, palette []color.Color, font_info FontInfo) {
 	char_width, char_height := getBoundsOfFont(font_info.font_data, font_info.font_size, font_info.DPI)
 	rect := image.Rect(0, 0, int(char_width*float64(chars_x)), int(char_height*float64(chars_y)))
 	var images []*image.Paletted
@@ -316,7 +316,7 @@ func RenderToGif(out io.Writer, chars_x, chars_y int, frames go3a.Body, delay in
 		images = append(images, pm)
 	}
 	gif.EncodeAll(out, &gif.GIF{
-        Image: images,
-        Delay: delays,
-    })
+		Image: images,
+		Delay: delays,
+	})
 }

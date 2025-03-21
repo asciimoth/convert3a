@@ -1,33 +1,34 @@
 /*
-    This file is part of convert3a.
+This file is part of convert3a.
 
-    convert3a is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+convert3a is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
 
-    convert3a is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+convert3a is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with convert3a.  If not, see <https://www.gnu.org/licenses/>.
+You should have received a copy of the GNU General Public License
+along with convert3a.  If not, see <https://www.gnu.org/licenses/>.
 */
 package main
 
 import (
-	"github.com/DomesticMoth/go3a"
-	"os"
 	"fmt"
-	"strings"
+	"os"
 	"path/filepath"
+	"strings"
+
+	"github.com/DomesticMoth/go3a"
+	"github.com/golang/freetype/truetype"
 	"github.com/llgcode/draw2d"
-	"golang.org/x/image/font/gofont/goregular"
 	"golang.org/x/image/font/gofont/gobold"
 	"golang.org/x/image/font/gofont/goitalic"
 	"golang.org/x/image/font/gofont/gomono"
-	"github.com/golang/freetype/truetype"
+	"golang.org/x/image/font/gofont/goregular"
 )
 
 func main() {
@@ -38,30 +39,28 @@ func main() {
 	}
 	if opts.Out == "" {
 		inp := filepath.Base(opts.Inp)
-		if strings.HasSuffix(inp, ".3a") {
-			inp = strings.TrimSuffix(inp, ".3a")
-		}
+		inp = strings.TrimSuffix(inp, ".3a")
 		if opts.Dyn {
 			opts.Out = inp + ".gif"
-		}else {
+		} else {
 			opts.Out = inp + ".png"
 		}
 	}
 	var font_size float64 = 72
-	if opts.FontSizeSetted{
+	if opts.FontSizeSetted {
 		font_size = float64(opts.FontSize)
 	}
 	DPI := 72
-	if opts.DPISetted{
+	if opts.DPISetted {
 		DPI = opts.DPI
 	}
 	// Set font
 	fontCache := MyFontCache{}
 	TTFs := map[string]([]byte){
 		"goregular": goregular.TTF,
-		"gobold": gobold.TTF,
-		"goitalic": goitalic.TTF,
-		"gomono": gomono.TTF,
+		"gobold":    gobold.TTF,
+		"goitalic":  goitalic.TTF,
+		"gomono":    gomono.TTF,
 	}
 
 	for fontName, TTF := range TTFs {
@@ -93,9 +92,9 @@ func main() {
 		panic(ferr)
 	}
 	defer f.Close()
-	if !opts.Dyn{
+	if !opts.Dyn {
 		RenderToPng(f, float64(art.Header.Width), float64(art.Header.Height), art.Body[preview], font_info, palette)
-	}else{
+	} else {
 		RenderToGif(f, int(art.Header.Width), int(art.Header.Height), art.Body, int(art.Header.Delay), palette, font_info)
 	}
 }
