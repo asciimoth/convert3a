@@ -1,5 +1,5 @@
 # convert3a
-This tool allows you to convert [3a](https://github.com/DomesticMoth/3a) animations to png images or gif animations.  
+This tool allows you to convert [3a](https://github.com/asciimoth/3a_storage) animations to png images or gif animations.  
 # Build
 ```sh
 git clone https://github.com/DomesticMoth/convert3a.git
